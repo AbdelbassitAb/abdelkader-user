@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "498029446888",
+    "project_id": "abdelkakder-app",
+    "storage_bucket": "abdelkakder-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498029446888:android:16da62f357329799362b5d",
+        "android_client_info": {
+          "package_name": "com.abdelbassit.abdelkader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498029446888-kerlo9vmd2rtlqu6032qr6lf7osekf1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9cu9dbwhg0wQm_zYeZ9wNcMffIBem2a4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498029446888-kerlo9vmd2rtlqu6032qr6lf7osekf1f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498029446888:android:da7ff3d507e441e8362b5d",
+        "android_client_info": {
+          "package_name": "com.abdelbassit.abdelkader_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498029446888-kerlo9vmd2rtlqu6032qr6lf7osekf1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9cu9dbwhg0wQm_zYeZ9wNcMffIBem2a4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498029446888-kerlo9vmd2rtlqu6032qr6lf7osekf1f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498029446888:android:80491a4674c7019c362b5d",
+        "android_client_info": {
+          "package_name": "com.abdelbassit.abdelkader_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498029446888-kerlo9vmd2rtlqu6032qr6lf7osekf1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9cu9dbwhg0wQm_zYeZ9wNcMffIBem2a4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498029446888-kerlo9vmd2rtlqu6032qr6lf7osekf1f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
