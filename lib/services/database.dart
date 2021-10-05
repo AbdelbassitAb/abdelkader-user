@@ -1,26 +1,36 @@
-
-import 'package:abdelkader_user/models/chef.dart';
-import 'package:abdelkader_user/models/models.dart';
+import 'package:abdelkader_user/models/chantier.dart';
+import 'package:abdelkader_user/models/chefData.dart';
+import 'package:abdelkader_user/models/transactions.dart';
+import 'package:abdelkader_user/models/worker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class DatabaseService {
+class DataBaseController extends GetxController {
+  // static DataBaseController to = Get.find();
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
   final String uid;
-  DatabaseService({this.uid});
-  final CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('Users');
-  final CollectionReference transactionsCollection =
-  FirebaseFirestore.instance.collection('Transactions');
-  final CollectionReference workersCollection =
-  FirebaseFirestore.instance.collection('Workers');
 
-  CollectionReference get collection {
+  DataBaseController({this.uid});
+
+  final CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection('Users');
+  final CollectionReference transactionsCollection =
+      FirebaseFirestore.instance.collection('Transactions');
+  final CollectionReference workersCollection =
+      FirebaseFirestore.instance.collection('Workers');
+
+  final CollectionReference chantiersCollection =
+      FirebaseFirestore.instance.collection('Chantier');
+
+/*  CollectionReference get collection {
     return usersCollection;
-  }
+  }*/
 
   Future<void> updateUserData(String uid, String name, String email,
-      String numTlf, double argent,bool deleted,{String pic}) async {
+      String numTlf, double argent, bool deleted) async {
     return await usersCollection.doc(uid).set({
       'uid': uid,
       'name': name,
@@ -28,141 +38,108 @@ class DatabaseService {
       'numTlf': numTlf,
       'argent': argent,
       'deleted': deleted,
-      'pic' : pic,
     });
   }
 
-  Future<void> updateWorkerData(String uid, String name,) async {
+  Future<void> updateWorkerData(
+    String uid,
+    String name,
+  ) async {
     return await workersCollection.doc(uid).set({
       'uid': uid,
       'name': name,
     });
   }
 
-
-  Future<void> updateUserTransaction(String uid, String name,String description,String time,
-      double argent,double somme,Workerr worker,bool deleted) async {
-
-    await transactionsCollection.doc(uid).set({
-      'uid': uid,
+  Future<void> updateChantier(
+    String name,
+  ) async {
+    return await chantiersCollection.doc(name).set({
       'name': name,
-      'description' : description,
-      'time' : time,
-      'argent': argent,
-      'somme' : somme,
-      'workerName' : worker.name,
-      'workerId' : worker.uid,
-      'deleted': deleted,
     });
+  }
 
-
-
-
-    await workersCollection.doc(worker.uid).collection('Transactions').doc(uid).set({
+  Future<void> updateUserTransaction(
+      String uid,
+      String name,
+      String description,
+      String time,
+      double argent,
+      double somme,
+      Workerr worker,
+      bool deleted,
+      String type,
+      String chantier) async {
+    await transactionsCollection
+        .doc('All transactions')
+        .collection('Transactions')
+        .doc(uid)
+        .set({
       'uid': uid,
       'name': name,
-      'description' : description,
-      'time' : time,
+      'description': description,
+      'time': time,
       'argent': argent,
-      'somme' : somme,
-      'workerName' : worker.name,
-      'workerId' : worker.uid,
-      'deleted': deleted,
-    });
-
-    return await usersCollection.doc(this.uid).collection('Transactions').doc(uid).set({
-      'uid': uid,
-      'name': name,
-      'description' : description,
-      'time' : time,
-      'argent': argent,
-      'somme' : somme,
-      'workerName' : worker.name,
-      'workerId' : worker.uid,
+      'somme': somme,
+      'type': type,
+      'chantier': chantier,
+      'workerName': worker.name,
+      'workerId': worker.uid,
       'deleted': deleted,
     });
   }
 
-  Future<void> addTransaction(String uid, String name,String description,String time,
-      double argent,double somme,bool deleted) async {
+/*  Future<void> addTransaction(String uid, String name, String description,
+      String time, double argent, double somme, bool deleted) async {
     return await usersCollection.doc(uid).collection('Transactions').add({
       'uid': uid,
       'name': name,
-      'description' : description,
-      'time' : time,
+      'description': description,
+      'time': time,
       'argent': argent,
-      'somme' : somme,
+      'somme': somme,
       'deleted': deleted,
     });
-  }
-
-
-
-
+  }*/
 
   List<ChefData> _chefListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return ChefData(
-          uid: doc.data()['uid'],
-          name: doc.data()['name'],
-          email: doc.data()['email'],
-          numTlf: doc.data()['numTlf'],
-          argent: doc.data()['argent'],
-          deleted: doc.data()['deleted'],
-          pic: doc.data()['pic']);
+      return ChefData.fromMap(doc.data());
+    }).toList();
+  }
+
+  ChefData _chefFromSnapshot(DocumentSnapshot snapshot) {
+    return ChefData.fromMap(snapshot.data());
+  }
+
+  List<Chantier> _chantiersListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Chantier.fromMap(doc.data());
     }).toList();
   }
 
   List<Workerr> _workerListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Workerr(
-        uid: doc.data()['uid'],
-        name: doc.data()['name'],
-      );
+      return Workerr.fromMap(doc.data());
     }).toList();
   }
-
-
 
   List<TR> _transactionsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return TR(
-          uid: doc.data()['uid'],
-          name: doc.data()['name'],
-          description: doc.data()['description'],
-          time: doc.data()['time'],
-          argent: doc.data()['argent'],
-          somme: doc.data()['somme'],
-          workerName: doc.data()['workerName'],
-          workerId: doc.data()['workerId'],
-          deleted: doc.data()['deleted']);
+      return TR.fromMap(doc.data());
     }).toList();
   }
 
-
-  ChefData _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return ChefData(
-
-        name: snapshot.data()['name'],
-        uid: snapshot.data()['uid'],
-        email: snapshot.data()['email'],
-        numTlf: snapshot.data()['numTlf'],
-        argent: snapshot.data()['argent'],
-        deleted: snapshot.data()['deleted'],
-        pic: snapshot.data()['pic']);
-
-  }
-
-  Stream<ChefData> get userData {
-    return usersCollection.doc(uid).snapshots()
-        .map(_userDataFromSnapshot);
-  }
-
-
-
-  //get brews stream
   Stream<List<ChefData>> get chefs {
     return usersCollection.snapshots().map(_chefListFromSnapshot);
+  }
+
+  Stream<ChefData> get chefData {
+    return usersCollection.doc(uid).snapshots().map(_chefFromSnapshot);
+  }
+
+  Stream<List<Chantier>> get chantiers {
+    return chantiersCollection.snapshots().map(_chantiersListFromSnapshot);
   }
 
   Stream<List<Workerr>> get workers {
@@ -170,60 +147,72 @@ class DatabaseService {
   }
 
   Stream<List<TR>> get allTransactions {
-    return  transactionsCollection.snapshots().map(_transactionsListFromSnapshot);
+    return transactionsCollection
+        .doc('All transactions')
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
   }
 
+/*  Stream<List<TR>> transactionsOf(String type) {
+    return transactionsCollection
+        .doc(type)
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
+  }*/
 
+  /* Stream<List<TR>> chantier(String name) {
+    return chantiersCollection
+        .doc(name)
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
+  }*/
 
-  Stream<List<TR>> get transactions {
-    return  usersCollection.doc(uid).collection('Transactions').snapshots().map(_transactionsListFromSnapshot);
+  /* Stream<List<TR>> get transactions {
+    return usersCollection
+        .doc(uid)
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
+  }*/
+
+  Stream<List<TR>> transactionQuery(String fieldName, String data) {
+    return transactionsCollection
+        .doc('All transactions')
+        .collection('Transactions')
+        .where(fieldName, isEqualTo: data)
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
   }
 
-
-
-
-
-
-
-  Stream<List<TR>> get workerTransactions {
-    return  workersCollection.doc(uid).collection('Transactions').snapshots().map(_transactionsListFromSnapshot);
-  }
-
-
-
+  /* Stream<List<TR>> get workerTransactions {
+    return workersCollection
+        .doc(uid)
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
+  }*/
 
   Future<void> deleteChef(String id) {
     return usersCollection.doc(id).delete();
   }
 
-
-
   Future<void> deleteTransaction(String id) {
-    transactionsCollection.doc(id).delete();
-    return usersCollection.doc(this.uid).collection('Transactions').doc(id).delete();
-
+    return transactionsCollection
+        .doc('All transactions')
+        .collection('Transactions')
+        .doc(id)
+        .delete();
   }
-  Future<void> deleteWorkersTransaction(String id) {
-    return workersCollection.doc(this.uid).collection('Transactions').doc(id).delete();
-
-  }
-
-
-
-
-
-
 }
+
 class FireStorageService extends ChangeNotifier {
   FireStorageService();
 
-  static Future<dynamic> loadFromStorage(BuildContext context,
-      String image) async {
+  static Future<dynamic> loadFromStorage(
+      BuildContext context, String image) async {
     return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }
-
-
-
-
-

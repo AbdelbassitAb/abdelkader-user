@@ -1,4 +1,4 @@
-import 'package:abdelkader_user/models/models.dart';
+import 'package:abdelkader_user/models/chefData.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {

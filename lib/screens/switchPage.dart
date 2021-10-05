@@ -1,8 +1,7 @@
+import 'package:abdelkader_user/constants/color.dart';
 import 'package:abdelkader_user/screens/home.dart';
 import 'package:abdelkader_user/screens/workers.dart';
 import 'package:flutter/material.dart';
-
-
 
 class SwitchPage extends StatefulWidget {
   @override
@@ -11,6 +10,7 @@ class SwitchPage extends StatefulWidget {
 
 class _SwitchPageState extends State<SwitchPage> {
   int _selectedindex;
+
   @override
   void initState() {
     _selectedindex = 0;
@@ -21,6 +21,7 @@ class _SwitchPageState extends State<SwitchPage> {
     Home(),
     Workers(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,17 +32,37 @@ class _SwitchPageState extends State<SwitchPage> {
           bottomNavigationBar: BottomNavigationBar(
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),title: Text('Page principale'),
+                icon: Icon(
+                  Icons.home,
+                  color: _selectedindex == 0 ? primaryColor : Colors.grey,
+                ),
+                title: Text(
+                  'Page principale',
+                  style: TextStyle(
+                    color: _selectedindex == 0 ? primaryColor : Colors.grey,
+                  ),
+                ),
               ),
-
               BottomNavigationBarItem(
-                icon: Icon(Icons.list),title: Text('Travailleurs'),
+                icon: Icon(
+                  Icons.groups,
+                  color: _selectedindex == 1 ? primaryColor : Colors.grey,
+                ),
+                title: Text(
+                  'Travailleurs',
+                  style: TextStyle(
+                    color: _selectedindex == 1 ? primaryColor : Colors.grey,
+                  ),
+                ),
               )
             ],
             currentIndex: _selectedindex,
-            onTap: (value){setState(() {
-              _selectedindex=value;
-            });},type: BottomNavigationBarType.shifting,
+            onTap: (value) {
+              setState(() {
+                _selectedindex = value;
+              });
+            },
+            type: BottomNavigationBarType.shifting,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.black,
             showUnselectedLabels: true,
@@ -49,6 +70,3 @@ class _SwitchPageState extends State<SwitchPage> {
     );
   }
 }
-
-
-

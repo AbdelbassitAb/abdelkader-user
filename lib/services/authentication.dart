@@ -1,4 +1,3 @@
-import 'package:abdelkader_user/models/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:abdelkader_user/models/chef.dart';
 import 'package:abdelkader_user/services/database.dart';
@@ -24,8 +23,8 @@ class AuthService {
           email: email, password: password);
       User user = result.user;
       // create a new document for the user with a uniq uid
-      await DatabaseService(uid: user.uid)
-          .updateUserData(user.uid, name, email, numTlf, money,false,pic: pic);
+      await DataBaseController(uid: user.uid)
+          .updateUserData(user.uid, name, email, numTlf, money,false,);
       return _userFromFirebaseUser(user);
     } catch (error) {
       print('error');
